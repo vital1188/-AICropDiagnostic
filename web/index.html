@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crop Diagnostic Studio</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="page">
+      <header class="page__header">
+        <div class="brand">
+          <span class="brand__icon">🌱</span>
+          <div>
+            <h1>Crop Diagnostic Studio</h1>
+            <p>AI-assisted insights for healthier, higher-yield fields.</p>
+          </div>
+        </div>
+        <nav class="page__nav">
+          <a href="#field-intelligence">Field Intelligence</a>
+          <a href="#symptom-lab">Symptom Lab</a>
+          <a href="#image-intel">Image Intel</a>
+        </nav>
+      </header>
+
+      <main class="page__content">
+        <section class="panel panel--highlight" id="field-intelligence">
+          <div class="panel__header">
+            <h2>Field Intelligence Console</h2>
+            <p>
+              Blend canopy, soil, and foliar signals into one cohesive diagnostic. Our
+              ensemble combines gradient-style scoring and rule-driven guards to
+              surface the most likely issues and the associated yield risk.
+            </p>
+          </div>
+          <form class="panel__grid" id="field-form">
+            <div class="input-group">
+              <label for="canopyTemperature">Canopy temperature (°C)</label>
+              <input type="range" id="canopyTemperature" min="15" max="45" value="28" step="0.5" />
+              <output data-for="canopyTemperature">28 °C</output>
+            </div>
+            <div class="input-group">
+              <label for="leafMoisture">Leaf moisture (%)</label>
+              <input type="range" id="leafMoisture" min="20" max="95" value="68" step="1" />
+              <output data-for="leafMoisture">68 %</output>
+            </div>
+            <div class="input-group">
+              <label for="soilMoisture">Soil moisture (% volumetric)</label>
+              <input type="range" id="soilMoisture" min="5" max="60" value="32" step="1" />
+              <output data-for="soilMoisture">32 %</output>
+            </div>
+            <div class="input-group">
+              <label for="lesionArea">Leaf lesion coverage (%)</label>
+              <input type="range" id="lesionArea" min="0" max="80" value="12" step="1" />
+              <output data-for="lesionArea">12 %</output>
+            </div>
+            <div class="input-group">
+              <label for="chlorophyll">Chlorophyll index</label>
+              <input type="range" id="chlorophyll" min="20" max="60" value="42" step="1" />
+              <output data-for="chlorophyll">42</output>
+            </div>
+            <div class="input-group">
+              <label for="diseasePressure">Regional disease pressure (0-100)</label>
+              <input type="range" id="diseasePressure" min="0" max="100" value="35" step="1" />
+              <output data-for="diseasePressure">35</output>
+            </div>
+            <div class="input-group">
+              <label for="nutrientBalance">Nutrient balance score (0-100)</label>
+              <input type="range" id="nutrientBalance" min="0" max="100" value="62" step="1" />
+              <output data-for="nutrientBalance">62</output>
+            </div>
+            <div class="input-group">
+              <label for="growthRate">Canopy growth index (0-100)</label>
+              <input type="range" id="growthRate" min="0" max="100" value="55" step="1" />
+              <output data-for="growthRate">55</output>
+            </div>
+          </form>
+          <div class="panel__actions">
+            <button type="button" class="btn" id="run-field-analysis">Run Ensemble Analysis</button>
+            <div class="switch">
+              <label class="switch__label">
+                <input type="checkbox" id="stabilityMode" />
+                <span class="switch__slider"></span>
+                Stability guardrails
+              </label>
+            </div>
+          </div>
+          <div class="results" id="field-results">
+            <div class="results__primary">
+              <h3>Primary Diagnosis</h3>
+              <p class="results__label">Ready when you are. Hit “Run Ensemble Analysis”.</p>
+            </div>
+            <div class="results__secondary">
+              <div>
+                <h4>Yield risk</h4>
+                <p class="results__metric" data-metric="risk">–</p>
+              </div>
+              <div>
+                <h4>Confidence</h4>
+                <p class="results__metric" data-metric="confidence">–</p>
+              </div>
+              <div>
+                <h4>Focus factors</h4>
+                <ul class="results__chips" data-list="drivers"></ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="symptom-lab">
+          <div class="panel__header">
+            <h2>Symptom Language Lab</h2>
+            <p>
+              Paste scouting notes or lab observations. A transformer-inspired text
+              matcher scores semantic similarity against curated disease fingerprints.
+            </p>
+          </div>
+          <div class="panel__content">
+            <textarea
+              id="symptomNotes"
+              rows="5"
+              placeholder="Example: Powdery patches on upper leaves, young foliage is curling and growth slowed."
+            ></textarea>
+            <div class="panel__actions panel__actions--spaced">
+              <button type="button" class="btn" id="analyze-notes">Analyze Symptom Text</button>
+              <small class="muted">We keep everything in-browser. Nothing leaves your device.</small>
+            </div>
+            <div class="results" id="symptom-results">
+              <div class="results__primary">
+                <h3>Likely match</h3>
+                <p class="results__label">Enter scouting notes to see AI matches.</p>
+              </div>
+              <div class="results__secondary">
+                <div>
+                  <h4>Match score</h4>
+                  <p class="results__metric" data-metric="score">–</p>
+                </div>
+                <div>
+                  <h4>Signal terms</h4>
+                  <ul class="results__chips" data-list="keywords"></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel panel--alt" id="image-intel">
+          <div class="panel__header">
+            <h2>Image Intel</h2>
+            <p>
+              Drop a leaf photo to get tone balance, lesion contrast, and vigor
+              metrics. These cues feed into the ensemble to validate text and sensor
+              signals.
+            </p>
+          </div>
+          <div class="image-drop" id="image-drop">
+            <input type="file" id="leafImage" accept="image/*" hidden />
+            <label for="leafImage" class="image-drop__label">
+              <span class="image-drop__icon">⬆️</span>
+              <span>Upload or drag & drop a leaf photo</span>
+              <small>High contrast images work best</small>
+            </label>
+            <canvas id="imagePreview" width="320" height="240" hidden></canvas>
+          </div>
+          <div class="image-metrics" id="image-metrics">
+            <div class="metric">
+              <span class="metric__label">Green vitality</span>
+              <strong data-metric="vitality">–</strong>
+            </div>
+            <div class="metric">
+              <span class="metric__label">Lesion contrast</span>
+              <strong data-metric="contrast">–</strong>
+            </div>
+            <div class="metric">
+              <span class="metric__label">Dryness score</span>
+              <strong data-metric="dryness">–</strong>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="page__footer">
+        <p>
+          Built with a privacy-first mindset. Models run locally in your browser,
+          blending heuristic ensemble scoring, semantic text search, and pixel-level
+          cues for reliable triage.
+        </p>
+      </footer>
+    </div>
+    <script src="script.js" type="module"></script>
+  </body>
+</html>
