@@ -1,0 +1,14 @@
+{
+  "name": "debt-advisor",
+  "version": "1.0.0",
+  "description": "Netlify functions and tooling for the Debt Advisor web experience.",
+  "private": true,
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo \"Static site served from web/\""
+  },
+  "dependencies": {
+    "dotenv": "^16.4.0",
+    "openai": "^4.54.0"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "debts": [
+    {"name": "Credit Card", "balance": 4500, "apr": 0.1999, "minimum_payment": 120},
+    {"name": "Auto Loan", "balance": 12000, "apr": 0.065, "minimum_payment": 260},
+    {"name": "Student Loan", "balance": 18000, "apr": 0.0425, "minimum_payment": 210}
+  ]
+}
