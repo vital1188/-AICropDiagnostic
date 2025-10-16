@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Debt Payoff Planner</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header>
+        <h1>Debt Payoff Planner</h1>
+        <p class="intro">
+          Plan your path to debt freedom with snowball or avalanche strategies.
+          Enter each debt, choose a strategy, and the tool will calculate the
+          recommended monthly and daily payments along with a full payoff
+          schedule.
+        </p>
+      </header>
+
+      <section aria-labelledby="inputs-heading" class="card">
+        <h2 id="inputs-heading">Debt details</h2>
+        <form id="planner-form" novalidate>
+          <div class="form-errors" role="alert" aria-live="polite"></div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Balance ($)</th>
+                  <th scope="col">APR (%)</th>
+                  <th scope="col">Minimum payment ($)</th>
+                  <th scope="col"><span class="sr-only">Actions</span></th>
+                </tr>
+              </thead>
+              <tbody id="debts-body"></tbody>
+            </table>
+          </div>
+          <div class="controls">
+            <button type="button" id="add-debt" class="secondary">Add debt</button>
+          </div>
+
+          <div class="grid">
+            <label class="field">
+              <span>Extra monthly payment ($)</span>
+              <input
+                type="number"
+                id="extra-payment"
+                name="extra-payment"
+                min="0"
+                step="0.01"
+                value="0"
+                required
+              />
+            </label>
+            <label class="field">
+              <span>Strategy</span>
+              <select id="strategy" name="strategy">
+                <option value="snowball">Snowball (lowest balance first)</option>
+                <option value="avalanche">Avalanche (highest APR first)</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="actions">
+            <button type="submit" class="primary">Generate plan</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="summary" class="card" aria-live="polite" hidden>
+        <h2>Plan summary</h2>
+        <dl class="summary-grid">
+          <div>
+            <dt>Strategy</dt>
+            <dd id="summary-strategy"></dd>
+          </div>
+          <div>
+            <dt>Months to payoff</dt>
+            <dd id="summary-months"></dd>
+          </div>
+          <div>
+            <dt>Years to payoff</dt>
+            <dd id="summary-years"></dd>
+          </div>
+          <div>
+            <dt>Total interest paid</dt>
+            <dd id="summary-interest"></dd>
+          </div>
+          <div>
+            <dt>Total amount paid</dt>
+            <dd id="summary-total"></dd>
+          </div>
+          <div>
+            <dt>Recommended monthly payment</dt>
+            <dd id="summary-monthly"></dd>
+          </div>
+          <div>
+            <dt>Approximate daily payment</dt>
+            <dd id="summary-daily"></dd>
+          </div>
+        </dl>
+      </section>
+
+      <section id="schedule" class="card" hidden>
+        <h2>Monthly schedule</h2>
+        <p class="muted">
+          Each month lists the total payment, interest paid, and remaining
+          balances after payments are applied.
+        </p>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Month</th>
+                <th scope="col">Total payment</th>
+                <th scope="col">Interest paid</th>
+                <th scope="col">Payments by debt</th>
+                <th scope="col">Remaining balances</th>
+              </tr>
+            </thead>
+            <tbody id="schedule-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js" type="module"></script>
+  </body>
+</html>

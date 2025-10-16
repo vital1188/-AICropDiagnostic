@@ -1,9 +1,10 @@
 # Debt Advisor
 
-This repository contains a lightweight command line tool that helps you plan how
-to pay down debt faster. It supports the popular **snowball** and **avalanche**
-payment strategies and provides quick insight into the monthly and daily
-payments required to become debt free.
+This repository contains both a deployable web experience and a lightweight
+command line tool that help you plan how to pay down debt faster. The planner
+supports the popular **snowball** and **avalanche** payment strategies and
+provides quick insight into the monthly and daily payments required to become
+debt free.
 
 ## Features
 
@@ -15,7 +16,33 @@ payments required to become debt free.
 - See the recommended monthly payment alongside an approximate daily amount to
   keep you on track.
 
-## Getting started
+## Web app (Netlify ready)
+
+The `web/` directory contains a static site optimised for Netlify. It includes a
+form for entering debts, toggling between snowball and avalanche strategies, and
+viewing the resulting payoff schedule.
+
+### Local preview
+
+1. Serve the static assets locally:
+
+   ```bash
+   python -m http.server 8000 --directory web
+   ```
+
+2. Open <http://localhost:8000> in your browser to interact with the planner.
+
+### Deploying to Netlify
+
+Netlify can deploy the site without a build step:
+
+- `netlify.toml` sets the publish directory to `web/` and includes a catch-all
+  redirect so client-side routing is not required.
+- To deploy from the CLI, run `netlify deploy --prod --dir=web` or connect the
+  repository in the Netlify dashboard and use the default build settings
+  (publish directory `web`, build command empty).
+
+## Command line tool
 
 1. Ensure Python 3.10+ is installed.
 2. Install dependencies for the optional test suite:
