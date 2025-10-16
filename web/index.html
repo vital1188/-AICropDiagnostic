@@ -102,6 +102,18 @@
         </dl>
       </section>
 
+      <section id="advice" class="card" aria-live="polite" hidden>
+        <div class="advice-header">
+          <h2>AI payoff coaching</h2>
+          <button type="button" id="generate-advice" class="primary subtle">Generate advice</button>
+        </div>
+        <p class="muted" id="advice-status">
+          Generate a personalized action plan using OpenAI once you've created a payoff strategy.
+        </p>
+        <div id="advice-content" class="advice-content" hidden></div>
+        <div id="advice-error" class="advice-error" role="alert"></div>
+      </section>
+
       <section id="schedule" class="card" hidden>
         <h2>Monthly schedule</h2>
         <p class="muted">

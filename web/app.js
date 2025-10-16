@@ -9,6 +9,13 @@ const strategyField = document.querySelector("#strategy");
 const summarySection = document.querySelector("#summary");
 const scheduleSection = document.querySelector("#schedule");
 const formErrors = document.querySelector(".form-errors");
+const adviceSection = document.querySelector("#advice");
+const generateAdviceButton = document.querySelector("#generate-advice");
+const adviceContent = document.querySelector("#advice-content");
+const adviceStatus = document.querySelector("#advice-status");
+const adviceError = document.querySelector("#advice-error");
+
+let latestSummary = null;
 
 function currency(value) {
   return `$${value.toFixed(2)}`;
@@ -278,6 +285,86 @@ function updateSchedule(summary) {
   });
 }
 
+function trimSchedule(schedule, limit = 6) {
+  return schedule.slice(0, limit).map((snapshot) => ({
+    month: snapshot.month,
+    totalPayment: snapshot.totalPayment,
+    totalInterest: snapshot.totalInterest,
+    payments: snapshot.payments,
+    remaining: snapshot.remaining,
+  }));
+}
+
+function prepareAdvice(summary) {
+  latestSummary = { ...summary, schedule: trimSchedule(summary.schedule) };
+  adviceSection.hidden = false;
+  adviceContent.hidden = true;
+  adviceContent.textContent = "";
+  adviceError.textContent = "";
+  adviceError.hidden = true;
+  adviceStatus.textContent =
+    "Generate a personalized action plan using OpenAI once you've created a payoff strategy.";
+  generateAdviceButton.disabled = false;
+}
+
+function setAdviceLoading() {
+  adviceError.textContent = "";
+  adviceError.hidden = true;
+  adviceContent.hidden = true;
+  adviceStatus.textContent = "Generating AI advice...";
+  generateAdviceButton.disabled = true;
+}
+
+function showAdvice(advice) {
+  adviceStatus.textContent = "Here's your AI-powered guidance:";
+  adviceContent.textContent = advice;
+  adviceContent.hidden = false;
+  adviceError.textContent = "";
+  adviceError.hidden = true;
+  generateAdviceButton.disabled = false;
+}
+
+function showAdviceError(message) {
+  adviceStatus.textContent = "";
+  adviceContent.hidden = true;
+  adviceContent.textContent = "";
+  adviceError.textContent = message;
+  adviceError.hidden = false;
+  generateAdviceButton.disabled = false;
+}
+
+async function requestAdvice() {
+  if (!latestSummary) {
+    showAdviceError("Generate a plan before requesting advice.");
+    return;
+  }
+
+  setAdviceLoading();
+
+  try {
+    const response = await fetch("/.netlify/functions/generate-advice", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ summary: latestSummary }),
+    });
+
+    const payload = await response.json();
+    if (!response.ok) {
+      throw new Error(payload.error || "Unable to generate advice.");
+    }
+
+    if (!payload.advice) {
+      throw new Error("Received an empty response from the AI service.");
+    }
+
+    showAdvice(payload.advice);
+  } catch (error) {
+    showAdviceError(error.message || "Unable to generate advice.");
+  }
+}
+
 function addDebtRow() {
   const debts = gatherDebts();
   debts.push(createEmptyDebt());
@@ -311,9 +398,14 @@ plannerForm.addEventListener("submit", (event) => {
     });
     updateSummary(summary);
     updateSchedule(summary);
+    prepareAdvice(summary);
   } catch (error) {
     showErrors([error.message]);
   }
+});
+
+generateAdviceButton.addEventListener("click", () => {
+  requestAdvice();
 });
 
 renderDebts([

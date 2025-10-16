@@ -143,6 +143,17 @@ button.primary:hover {
   box-shadow: 0 20px 30px rgba(99, 102, 241, 0.4);
 }
 
+button.primary.subtle {
+  background: rgba(99, 102, 241, 0.1);
+  color: #4338ca;
+  box-shadow: none;
+}
+
+button.primary.subtle:hover {
+  background: rgba(99, 102, 241, 0.2);
+  box-shadow: none;
+}
+
 button.secondary {
   background-color: rgba(99, 102, 241, 0.12);
   color: #4338ca;
@@ -179,6 +190,29 @@ button.secondary:hover {
   font-size: 1.125rem;
   font-weight: 600;
   color: #0f172a;
+}
+
+.advice-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.advice-content {
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(129, 140, 248, 0.08));
+  color: #1f2937;
+  white-space: pre-wrap;
+  line-height: 1.7;
+}
+
+.advice-error {
+  margin-top: 1rem;
+  color: #b91c1c;
 }
 
 .badge {

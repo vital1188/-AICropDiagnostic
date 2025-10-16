@@ -4,11 +4,17 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 from typing import Iterable, List
 
+from dotenv import load_dotenv
+
 from .models import Debt
 from .planner import DebtAdvisor, PaymentSummary
+from .ai import AdviceGenerationError, generate_ai_advice
+
+load_dotenv()
 
 
 def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
@@ -35,6 +41,11 @@ def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
         type=int,
         default=12,
         help="Number of months of the schedule to display (default: 12).",
+    )
+    parser.add_argument(
+        "--advice",
+        action="store_true",
+        help="Generate AI-powered payoff coaching with your OpenAI credentials.",
     )
     return parser.parse_args(argv)
 
@@ -107,6 +118,17 @@ def main(argv: Iterable[str] | None = None) -> int:
     advisor = DebtAdvisor(debts)
     summary = advisor.plan(strategy=args.strategy, extra_payment=args.extra)
     print(render_summary(summary, months_to_show=args.months))
+
+    if args.advice:
+        try:
+            advice = generate_ai_advice(summary)
+        except AdviceGenerationError as exc:
+            print(f"\n[AI] Unable to generate payoff advice: {exc}", file=sys.stderr)
+            return 1
+
+        print("\n=== AI Coaching Suggestions ===")
+        print(advice)
+
     return 0
 
 

@@ -15,6 +15,19 @@ debt free.
 - View monthly payoff schedules with remaining balances and interest paid.
 - See the recommended monthly payment alongside an approximate daily amount to
   keep you on track.
+- Generate tailored payoff coaching by calling OpenAI's latest models.
+
+## Configure your OpenAI credentials
+
+Both the CLI and the Netlify function expect an OpenAI API key. Copy
+`.env.example` to `.env` and fill in your key (optionally override the model):
+
+```bash
+cp .env.example .env
+```
+
+The tooling automatically loads this file in local development. Netlify users
+should add the same variables in the site dashboard.
 
 ## Web app (Netlify ready)
 
@@ -24,13 +37,17 @@ viewing the resulting payoff schedule.
 
 ### Local preview
 
-1. Serve the static assets locally:
+The web experience is a static site plus a Netlify serverless function for AI
+advice. Install the JavaScript dependencies and launch a local server:
 
-   ```bash
-   python -m http.server 8000 --directory web
-   ```
+```bash
+npm install
+netlify dev
+```
 
-2. Open <http://localhost:8000> in your browser to interact with the planner.
+Netlify Dev automatically wires the static site and the OpenAI-powered function
+at `/.netlify/functions/generate-advice`. Open <http://localhost:8888> to test
+the planner end-to-end.
 
 ### Deploying to Netlify
 
@@ -45,10 +62,10 @@ Netlify can deploy the site without a build step:
 ## Command line tool
 
 1. Ensure Python 3.10+ is installed.
-2. Install dependencies for the optional test suite:
+2. Install the Python dependencies:
 
    ```bash
-   pip install -r requirements.txt  # only required if you plan to run pytest
+   pip install -r requirements.txt
    ```
 
 3. Create a JSON file that describes your debts. An example is provided at
@@ -67,7 +84,7 @@ Netlify can deploy the site without a build step:
 4. Run the advisor:
 
    ```bash
-   python -m debt_advisor.cli examples/sample_debts.json --strategy avalanche --extra 150 --months 6
+   python -m debt_advisor.cli examples/sample_debts.json --strategy avalanche --extra 150 --months 6 --advice
    ```
 
    This prints a summary similar to the following:
@@ -92,7 +109,9 @@ Netlify can deploy the site without a build step:
    ```
 
    Increase the `--months` parameter to see more of the schedule, or omit it to
-   view the first year by default.
+   view the first year by default. Add `--advice` to request personalized AI
+   coaching. The command exits with an error if the OpenAI API key is not
+   configured.
 
 ## Running tests
 
